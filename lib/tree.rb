@@ -84,12 +84,22 @@ class Tree
     current
   end
 
-  def level_order(queue = [@root], &block)
-    block.call(queue.first)
-    queue << queue.first.left unless queue.first.left.nil?
-    queue << queue.first.right unless queue.first.right.nil?
-    queue.shift
-    level_order(queue, &block) until queue.empty?
+  # Recursive version of level_order
+  # def level_order(queue = [@root], &block)
+  #   block.call(queue.first)
+  #   queue << queue.first.left unless queue.first.left.nil?
+  #   queue << queue.first.right unless queue.first.right.nil?
+  #   queue.shift
+  #   level_order(queue, &block) until queue.empty?
+  # end
+
+  def level_order(queue = [@root])
+    while queue.first
+      yield(queue.first)
+      queue << queue.first.left if queue.first.left
+      queue << queue.first.right if queue.first.right
+      queue.shift
+    end
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
