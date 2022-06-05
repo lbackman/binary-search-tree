@@ -34,6 +34,56 @@ class Tree
     end
   end
 
+  def find(value, node = @root)
+    if value == node.data
+      puts node.data
+      node
+    elsif value < node.data
+      if node.left
+        find(value, node.left)
+      else
+        puts "#{value} not found"
+      end
+    else
+      if node.right
+        find(value, node.right)
+      else
+        puts "#{value} not found"
+      end
+    end
+  end
+
+  def delete(value, node = @root)
+    return node if node.nil?
+
+    if value < node.data
+      node.left = delete(value, node.left)
+    elsif value > node.data
+      node.right = delete(value, node.right)
+    else
+      if node.left.nil?
+        node = node.right
+        node
+      elsif node.right.nil?
+        node = node.left
+        node
+      else
+        temp = min_value_node(node.right)
+        node.data = temp.data
+        node.right = delete(temp.data, node.right)
+      end
+    end
+    node
+  end
+
+  def min_value_node(node)
+    current = node
+    until current.left.nil?
+      current = current.left
+    end
+    current
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
