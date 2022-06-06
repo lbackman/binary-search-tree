@@ -94,12 +94,18 @@ class Tree
   # end
 
   def level_order(queue = [@root])
+    output_arr = []
     while queue.first
-      yield(queue.first)
+      if block_given?
+        yield(queue.first)
+      else
+        output_arr << queue.first.data
+      end
       queue << queue.first.left if queue.first.left
       queue << queue.first.right if queue.first.right
       queue.shift
     end
+    output_arr
   end
 
   def inorder(node = @root, &block)
