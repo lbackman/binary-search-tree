@@ -1,5 +1,5 @@
 class Tree
-  attr_reader :root
+  attr_accessor :root
 
   def initialize(arr = [])
     @root = build_tree(arr)
@@ -111,10 +111,10 @@ class Tree
       inorder(node.right, &block) if node.right
     else
       arr = []
-      arr << inorder(node.left)
-      arr << node
-      arr << inorder(node.right)
-      arr.compact
+      arr += inorder(node.left) if node.left
+      arr << node.data
+      arr += inorder(node.right) if node.right
+      arr
     end
   end
 
@@ -127,10 +127,10 @@ class Tree
       preorder(node.right, &block)
     else
       arr = []
-      arr << node
-      arr << preorder(node.left)
-      arr << preorder(node.right)
-      arr.compact
+      arr << node.data
+      arr += preorder(node.left) if node.left
+      arr += preorder(node.right) if node.right
+      arr
     end
   end
 
@@ -143,15 +143,15 @@ class Tree
       block.call node
     else
       arr = []
-      arr << postorder(node.left)
-      arr << postorder(node.right)
-      arr << node
-      arr.compact
+      arr += postorder(node.left) if node.left
+      arr += postorder(node.right) if node.right
+      arr << node.data
+      arr
     end
   end
 
   def height(node)
-    return "No such node" unless node
+    return -1 unless node
 
     return 0 unless node.left || node.right
 
@@ -161,7 +161,7 @@ class Tree
   end
 
   def depth(node, top_node = @root)
-    return "No such node" unless node
+    return -1 unless node
 
     if node.data == top_node.data
       return 0
@@ -170,6 +170,19 @@ class Tree
     else
       return 1 + depth(node, top_node.right)
     end
+  end
+
+  def balanced?(node = @root)
+    return true if !node
+
+    (height(node.left) - height(node.right)).abs <= 1\
+      && balanced?(node.left)\
+      && balanced?(node.right)
+  end
+
+  def rebalance
+    new_arr = inorder
+    @root = build_tree(new_arr)
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
