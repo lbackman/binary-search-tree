@@ -28,7 +28,7 @@ puts "Pre-order: #{tr.preorder}"
 puts "Post-order: #{tr.postorder}"
 puts "Level-order: #{tr.level_order}"
 
-tr.rebalance
+tr.rebalance!
 
 tr.pretty_print
 puts "Tree is balanced? : #{tr.balanced?}"

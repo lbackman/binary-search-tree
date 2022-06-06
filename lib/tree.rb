@@ -186,7 +186,7 @@ class Tree
       && balanced?(node.right)
   end
 
-  def rebalance
+  def rebalance!
     new_arr = inorder
     @root = build_tree(new_arr)
   end
