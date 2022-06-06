@@ -150,6 +150,28 @@ class Tree
     end
   end
 
+  def height(node)
+    return "No such node" unless node
+
+    return 0 unless node.left || node.right
+
+    left_height = node.left ? height(node.left,) + 1 : 0
+    right_height = node.right ? height(node.right) + 1 : 0
+    [left_height, right_height].max
+  end
+
+  def depth(node, top_node = @root)
+    return "No such node" unless node
+
+    if node.data == top_node.data
+      return 0
+    elsif node.data < top_node.data
+      return 1 + depth(node, top_node.left)
+    else
+      return 1 + depth(node, top_node.right)
+    end
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
