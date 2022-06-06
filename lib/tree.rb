@@ -102,6 +102,54 @@ class Tree
     end
   end
 
+  def inorder(node = @root, &block)
+    return unless node
+
+    if block_given?
+      inorder(node.left, &block) if node.left
+      block.call node
+      inorder(node.right, &block) if node.right
+    else
+      arr = []
+      arr << inorder(node.left)
+      arr << node
+      arr << inorder(node.right)
+      arr.compact
+    end
+  end
+
+  def preorder(node = @root, &block)
+    return unless node
+
+    if block_given?
+      block.call node
+      preorder(node.left, &block)
+      preorder(node.right, &block)
+    else
+      arr = []
+      arr << node
+      arr << preorder(node.left)
+      arr << preorder(node.right)
+      arr.compact
+    end
+  end
+
+  def postorder(node = @root, &block)
+    return unless node
+
+    if block_given?
+      postorder(node.left, &block)
+      postorder(node.right, &block)
+      block.call node
+    else
+      arr = []
+      arr << postorder(node.left)
+      arr << postorder(node.right)
+      arr << node
+      arr.compact
+    end
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
