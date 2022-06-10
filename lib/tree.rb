@@ -170,11 +170,11 @@ class Tree
     return -1 unless node
 
     if node.data == top_node.data
-      return 0
+      0
     elsif node.data < top_node.data
-      return 1 + depth(node, top_node.left)
+      1 + depth(node, top_node.left)
     else
-      return 1 + depth(node, top_node.right)
+      1 + depth(node, top_node.right)
     end
   end
 
